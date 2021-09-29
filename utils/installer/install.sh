@@ -81,6 +81,7 @@ EOF
   detect_platform
 
   if [ -n "$GITHUB_ACTIONS" ]; then
+    echo "INSTALLER: testing github installation workflow.."
     LV_BRANCH="${GITHUB_REF##*/}"
     install_packer
     setup_lvim
