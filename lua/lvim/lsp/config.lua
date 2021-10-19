@@ -62,5 +62,6 @@ return {
       "tailwindcss",
       "volar",
     },
+    manual_config = {},
   },
 }

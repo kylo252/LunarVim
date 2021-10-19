@@ -32,6 +32,10 @@ local function resolve_config(name, user_config)
     config = vim.tbl_deep_extend("force", config, custom_config)
   end
 
+  if lvim.lsp.servers.manual_config[name] then
+    config = vim.tbl_deep_extend("force", config, lvim.lsp.servers.manual_config[name])
+  end
+
   if user_config then
     config = vim.tbl_deep_extend("force", config, user_config)
   end
