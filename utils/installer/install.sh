@@ -356,8 +356,8 @@ function setup_lvim() {
   cp "$LUNARVIM_RUNTIME_DIR/lvim/utils/installer/config.example.lua" "$LUNARVIM_CONFIG_DIR/config.lua"
 
   "$INSTALL_PREFIX/bin/lvim" --headless \
-    -c 'autocmd User PackerComplete quitall' \
-    -c 'PackerSync'
+    -c 'lua require("lvim.utils.hooks").run_post_install()' \
+    -c 'qall'
 
   echo "Packer setup complete"
 }

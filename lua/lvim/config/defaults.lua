@@ -1,3 +1,5 @@
+local in_headless = #vim.api.nvim_list_uis() == 0
+
 return {
   leader = "space",
   colorscheme = "onedarker",
@@ -21,7 +23,7 @@ return {
   lang = {},
   log = {
     ---@usage can be { "trace", "debug", "info", "warn", "error", "fatal" },
-    level = "warn",
+    level = in_headless and "debug" or "warn",
     viewer = {
       ---@usage this will fallback on "less +F" if not found
       cmd = "lnav",
