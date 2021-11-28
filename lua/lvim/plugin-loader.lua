@@ -130,8 +130,8 @@ function plugin_loader.install_core_plugins()
     end
     missing_plugins[name] = true
 
-    Log:debug("Syncing " .. plugin)
-    pcall_packer_command("sync", plugin)
+    Log:debug("install " .. plugin)
+    pcall_packer_command("install", plugin)
   end
 
   for _, plugin in pairs(core_plugins) do

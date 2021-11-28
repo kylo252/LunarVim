@@ -341,8 +341,7 @@ function setup_lvim() {
   echo "Preparing Packer setup"
 
   "$INSTALL_PREFIX/bin/lvim" --headless \
-    -c 'autocmd User PackerComplete quitall' \
-    -c 'PackerSync'
+    -c 'lua require("lvim.utils.hooks").run_post_install()'
 
   echo "Packer setup complete"
 }

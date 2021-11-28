@@ -41,4 +41,9 @@ function M.run_post_update()
   end
 end
 
+function M.run_post_install()
+  Log:debug "Starting post-install hook"
+  plugin_loader.recompile()
+end
+
 return M
