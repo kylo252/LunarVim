@@ -1,4 +1,6 @@
 local M = {}
+local Log = require "lvim.core.log"
+
 M.methods = {}
 
 ---checks if the character preceding the cursor is a space character
@@ -146,14 +148,14 @@ end
 M.methods.jumpable = jumpable
 
 M.config = function()
-  lvim.builtin.cmp = {}
-
   local status_cmp_ok, cmp = pcall(require, "cmp")
   if not status_cmp_ok then
+    Log:debug "[cmp] unable to load configuration, module not found."
     return
   end
   local status_luasnip_ok, luasnip = pcall(require, "luasnip")
   if not status_luasnip_ok then
+    Log:debug "[luasnip] unable to load configuration, module not found."
     return
   end
 
