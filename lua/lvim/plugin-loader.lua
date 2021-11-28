@@ -64,7 +64,9 @@ end
 function plugin_loader.recompile()
   plugin_loader.cache_clear()
   pcall_packer_command "compile"
-  if utils.is_file(compile_path) then
+  if vim.wait(60000 * 2, function()
+    return utils.is_file(compile_path)
+  end, 100) then
     Log:debug "generated packer_compiled.lua"
   end
 end
