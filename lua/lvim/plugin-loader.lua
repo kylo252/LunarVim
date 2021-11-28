@@ -4,14 +4,19 @@ local in_headless = #vim.api.nvim_list_uis() == 0
 
 local utils = require "lvim.utils"
 local Log = require "lvim.core.log"
+
 -- we need to reuse this outside of init()
-local compile_path = get_config_dir() .. "/plugin/packer_compiled.lua"
+local compile_path = utils.join_paths(get_config_dir(), "plugin", "packer_compiled.lua")
+local default_package_root = utils.join_paths(get_runtime_dir(), "site", "pack")
+local default_plugins_root = utils.join_paths(get_runtime_dir(), "site", "pack", "packer", "start")
+local default_opt_plugins_root = utils.join_paths(get_runtime_dir(), "site", "pack", "packer", "opt")
+local default_install_path = utils.join_paths(default_plugins_root, "packer.nvim")
 
 function plugin_loader.init(opts)
   opts = opts or {}
 
-  local install_path = opts.install_path or vim.fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-  local package_root = opts.package_root or vim.fn.stdpath "data" .. "/site/pack"
+  local package_root = opts.package_root or default_package_root
+  local install_path = opts.install_path or default_install_path
 
   if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
     vim.fn.system { "git", "clone", "--depth", "1", "https://github.com/wbthomason/packer.nvim", install_path }
@@ -36,6 +41,10 @@ function plugin_loader.init(opts)
       end,
     },
   }
+
+  if vim.fn.empty(vim.fn.glob(default_opt_plugins_root)) > 0 then
+    plugin_loader.install_core_plugins()
+  end
 end
 
 -- packer expects a space separated list
@@ -98,6 +107,44 @@ function plugin_loader.sync_core_plugins()
   local core_plugins = plugin_loader.get_core_plugins()
   Log:trace(string.format("Syncing core plugins: [%q]", table.concat(core_plugins, ", ")))
   pcall_packer_command("sync", core_plugins)
+end
+
+function plugin_loader.install_core_plugins()
+  local core_plugins = plugin_loader.get_core_plugins()
+  local pack_root = utils.join_paths(get_runtime_dir(), "site", "pack", "packer")
+
+  Log:trace(string.format("Syncing core plugins: [%q]", table.concat(core_plugins, ", ")))
+
+  local missing_plugins = {}
+  local function install(plugin)
+    if plugin.disable then
+      Log:trace("skipping disabled plugin: " .. plugin[1])
+      return
+    end
+    local is_optional = plugin.cmd or plugin.event or plugin.opt
+    local name = plugin[1]:match "^[%w-]+/([%w-_.]+)$"
+    local plugin_dir = utils.join_paths(pack_root, is_optional and "opt" or "start", name)
+    local exists = vim.fn.isdirectory(plugin_dir) ~= 0
+    if exists then
+      Log:trace("plugin already installed: " .. plugin[1])
+      return
+    end
+    missing_plugins[name] = true
+
+    Log:debug("Syncing " .. plugin)
+    pcall_packer_command("sync", plugin)
+  end
+
+  for _, plugin in pairs(core_plugins) do
+    install(plugin)
+  end
+
+  if vim.wait(60000 * #missing_plugins, function()
+    return #missing_plugins == 0
+  end, 100) then
+    Log:debug "installation complete"
+    plugin_loader.recompile()
+  end
 end
 
 return plugin_loader
