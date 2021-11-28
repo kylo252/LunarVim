@@ -24,9 +24,6 @@ function plugin_loader.init(opts)
   end
 
   local log_level = in_headless and "debug" or "warn"
-  if lvim.log and lvim.log.level then
-    log_level = lvim.log.level
-  end
 
   local _, packer = pcall(require, "packer")
   packer.init {
