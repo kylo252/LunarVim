@@ -82,13 +82,12 @@ return {
     end,
     requires = {
       "L3MON4D3/LuaSnip",
+      "rafamadriz/friendly-snippets",
     },
   },
   {
     "rafamadriz/friendly-snippets",
     commit = commit.friendly_snippets,
-    -- event = "InsertCharPre",
-    -- disable = not lvim.builtin.compe.active,
   },
   {
     "L3MON4D3/LuaSnip",
@@ -104,22 +103,18 @@ return {
   {
     "saadparwaiz1/cmp_luasnip",
     commit = commit.cmp_luasnip,
-    after = "nvim-cmp",
   },
   {
     "hrsh7th/cmp-buffer",
     commit = commit.cmp_buffer,
-    after = "nvim-cmp",
   },
   {
     "hrsh7th/cmp-path",
     commit = commit.cmp_path,
-    after = "nvim-cmp",
   },
   {
     "hrsh7th/cmp-nvim-lua",
     commit = commit.cmp_nvim_lua,
-    after = "nvim-cmp",
   },
 
   -- Autopairs
