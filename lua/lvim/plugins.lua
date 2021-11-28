@@ -78,12 +78,15 @@ return {
     "hrsh7th/nvim-cmp",
     commit = commit.nvim_cmp,
     config = function()
-      require("lvim.core.cmp").setup()
+      if lvim.builtin.cmp then
+        require("lvim.core.cmp").setup()
+      end
     end,
     requires = {
       "L3MON4D3/LuaSnip",
       "rafamadriz/friendly-snippets",
     },
+    module = "cmp",
   },
   {
     "rafamadriz/friendly-snippets",
