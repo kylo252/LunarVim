@@ -1,15 +1,12 @@
 name: lint
 on:
-  push:
-    branches: "**"
   pull_request:
     branches:
       - "master"
       - "rolling"
 
 jobs:
-  lua-linter:
-    name: "Linting with luacheck"
+  lint:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
@@ -23,11 +20,6 @@ jobs:
       - name: Run luacheck
         run: make lint-lua
 
-  shellcheck:
-    name: Shellcheck
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@master
         with:

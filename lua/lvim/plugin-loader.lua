@@ -106,10 +106,21 @@ function plugin_loader.get_core_plugins()
   return list
 end
 
-function plugin_loader.sync_core_plugins()
+function plugin_loader.sync_core_plugins(synced)
+  plugin_loader.cache_clear()
   local core_plugins = plugin_loader.get_core_plugins()
   Log:trace(string.format("Syncing core plugins: [%q]", table.concat(core_plugins, ", ")))
   pcall_packer_command("sync", core_plugins)
+  if not synced then
+    return
+  end
+  if vim.wait(1000 * 10 * #core_plugins, function()
+    return utils.is_file(compile_path)
+  end, 500) then
+    Log:info "Core plugins updated"
+  else
+    Log:error "timed out while generating packer_compiled.lua"
+  end
 end
 
 function plugin_loader.ensure_installed()

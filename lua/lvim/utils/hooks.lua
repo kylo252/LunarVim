@@ -34,6 +34,11 @@ function M.run_post_reload()
   require("lvim.plugin-loader").ensure_installed()
 end
 
+function M.run_on_install()
+  Log:debug "Starting on-install hook"
+  require("lvim.plugin-loader").sync_core_plugins(true)
+end
+
 ---Reset any startup cache files used by Packer and Impatient
 ---It also forces regenerating any template ftplugin files
 ---Tip: Useful for clearing any outdated settings
