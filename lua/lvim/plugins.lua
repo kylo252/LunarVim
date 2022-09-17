@@ -51,7 +51,7 @@ local core_plugins = {
   {
     "nvim-telescope/telescope-fzf-native.nvim",
     requires = { "nvim-telescope/telescope.nvim" },
-    run = "make",
+    run = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     disable = not lvim.builtin.telescope.active,
   },
   -- Install nvim-cmp, and buffer source as a dependency

@@ -141,7 +141,11 @@ function Log:configure_notifications(notif_handle)
     impl = notif_handle,
   })
 
-  table.insert(self.__handle.sinks, sink)
+  local logger = self:get_logger()
+  if not logger then
+    return
+  end
+  table.insert(logger.sinks, sink)
 end
 
 --- Adds a log entry using Plenary.log
