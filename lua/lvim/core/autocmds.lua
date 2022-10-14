@@ -31,6 +31,17 @@ function M.load_defaults()
   })
   local definitions = {
     {
+      "VimEnter",
+      {
+        group = "_plugin_loader",
+        desc = "Plugin loader",
+        callback = function()
+          local plugins = require "lvim.plugins"
+          require("lvim.plugin-loader").load { plugins, lvim.plugins }
+        end,
+      },
+    },
+    {
       "TextYankPost",
       {
         group = "_general_settings",
