@@ -149,6 +149,9 @@ function M:reload()
 
     M:load()
 
+    -- ensure that any modifications are retained, e.g. additions to lvim.plugins
+    vim.cmd [[source $LUNARVIM_CONFIG_DIR/after/plugin/*.lua]]
+
     reload("lvim.core.autocmds").configure_format_on_save()
 
     local plugins = reload "lvim.plugins"
