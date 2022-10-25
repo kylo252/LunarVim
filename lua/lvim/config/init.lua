@@ -17,9 +17,6 @@ function M:init()
 
   require("lvim.keymappings").load_defaults()
 
-  local builtins = require "lvim.core.builtins"
-  builtins.config { user_config_file = user_config_file }
-
   local settings = require "lvim.config.settings"
   settings.load_defaults()
 
@@ -49,8 +46,11 @@ function M:init()
 
   ---@deprecated
   lvim.builtin.notify = {
-    active = false
+    active = false,
   }
+
+  local builtins = require "lvim.core.builtins"
+  builtins.config { user_config_file = user_config_file }
 end
 
 local function handle_deprecated_settings()
@@ -98,12 +98,10 @@ local function handle_deprecated_settings()
     deprecation_notice("lvim.builtin.dashboard", "Use `lvim.builtin.alpha` instead. See LunarVim#1906")
   end
 
-
   -- notify.nvim
   if lvim.builtin.notify.active then
     deprecation_notice("lvim.builtin.notify", "See LunarVim#3294")
   end
-
 
   if lvim.autocommands.custom_groups then
     deprecation_notice(

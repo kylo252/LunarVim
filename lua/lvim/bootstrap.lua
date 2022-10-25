@@ -59,9 +59,6 @@ function M:init(base_dir)
   self.runtime_dir = get_runtime_dir()
   self.config_dir = get_config_dir()
   self.cache_dir = get_cache_dir()
-  self.pack_dir = join_paths(self.runtime_dir, "site", "pack")
-  self.packer_install_dir = join_paths(self.runtime_dir, "site", "pack", "packer", "start", "packer.nvim")
-  self.packer_cache_path = join_paths(self.config_dir, "plugin", "packer_compiled.lua")
 
   ---@meta overridden to use LUNARVIM_CACHE_DIR instead, since a lot of plugins call this function internally
   ---NOTE: changes to "data" are currently unstable, see #2507
@@ -100,11 +97,6 @@ function M:init(base_dir)
   end
 
   require("lvim.config"):init()
-
-  require("lvim.plugin-loader").init {
-    package_root = self.pack_dir,
-    install_path = self.packer_install_dir,
-  }
 
   return self
 end
